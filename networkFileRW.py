@@ -1,28 +1,40 @@
 #!/usr/bin/env python3
 #networkFileRW.py
-#Alfred Jiokeng
-#Sunday, April 2, 2023
+#Harmon Throneberry
+#Saturday, April 3, 2023
 #Update routers and switches;
+#MOD9 GPA: Git & GitHUB this is for GPA9
 #read equipment from a file, write updates & errors to file
+#added the solution to this file
+
 
 ##---->>>> Use a try/except clause to import the JSON module
 
-##try:
-##    with open()
+try:
+    import json
+
+except:
+    print('The JSON moduled failed to import.',
+          'Check your Python 3 installation and try again!')
 
 ##---->>>> Create file constants for the file names; file constants can be reused
 ##         There are 2 files to read this program: equip_r.txt and equip_s.txt
-##         There are 2 files to write in this program: updated.txt and errors.txt
-
 FILENAME1 = 'equip_r.txt'
 FILENAME2 = 'equip_s.txt'
 
+         
+##         There are 2 files to write in this program: updated.txt and errors.txt
+FILENAME3 = 'updated.txt'
+FILENAME4 = 'errors.txt'
+
 
 #prompt constants
+
 UPDATE = "\nWhich device would you like to update "
 QUIT = "(enter x to quit)? "
 NEW_IP = "What is the new IP address (111.111.111.111) "
 SORRY = "Sorry, that is not a valid IP address\n"
+
 
 #function to get valid device
 def getValidDevice(routers, switches):
@@ -61,23 +73,18 @@ def getValidIP(invalidIPCount, invalidIPAddresses):
 def main():
 
     ##---->>>> open files here
-
-
-
-    
     #dictionaries
     ##---->>>> read the routers and addresses into the router dictionary
+    
+    with open(FILENAME1) as r:
+        routers = json.load(r)
 
-    routers = {"router1":"10.10.10.1", "router2":"20.20.20.1", "router3":"30.30.30.1"}
+    ##---->>>> read the switches and addresses into the switches dictionary          
 
-
-    ##---->>>> read the switches and addresses into the switches dictionary
-
-    switches = {"switch1":"10.10.10.2", "switch2":"10.10.10.3", "switch3":"10.10.10.4",
-            "switch4":"10.10.10.5", "switch5":"20.20.20.2", "switch6":"20.20.20.3",
-            "switch7":"30.30.30.2", "switch8":"30.30.30.3", "switch9":"30.30.30.4"}
-
-
+    with open(FILENAME2) as s:
+        switches = json.load(s)
+    
+        
     #the updated dictionary holds the device name and new ip address
     updated = {}
 
@@ -134,16 +141,17 @@ def main():
     print("Number of devices updated:", devicesUpdatedCount)
 
     ##---->>>> write the updated equipment dictionary to a file
-
-    
-    print("Updated equipment written to file 'updated.txt'")
-    print()
-    print("\nNumber of invalid addresses attempted:", invalidIPCount)
+    with open(FILENAME3, 'w') as e:
+        json.dump(updated, e)
+        print("Updated equipment written to tile 'updated.txt'")
+        print()
+        print("\nNumber of invalid addresses attempted:", invalidIPCount)
 
     ##---->>>> write the list of invalid addresses to a file
-    
+    with open(FILENAME4, 'w') as e:
+        json.dump(invalidIPAddresses, e)
 
-    print("List of invalid addresses written to file 'errors.txt'")
+        print("List of invalid addresses written to file 'errors.txt'")
 
 #top-level scope check
 if __name__ == "__main__":
